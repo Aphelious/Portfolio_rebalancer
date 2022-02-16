@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, String, Float, Date, create_engine
-from sqlalchemy.orm import declarative_base
-import yfinance as yf
+from sqlalchemy import Column, Integer, String, Float, Date
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-engine = create_engine(f'sqlite:///transactions.db', echo=True, future=True)
+
 Base = declarative_base()
+Session = sessionmaker(bind=engine)
+session = Session()
 
 
 # Set up SQLAlchemy Mapping for the Transaction class:
@@ -84,9 +85,6 @@ class Transaction(Base):
     share_price = Column(Float)
     amount = Column(Float)
     principal_amount = Column(Float)
-
-    def __str__(self):
-        return f'Row id: {self.id}, Transaction type: {self.trans_type}, Investment: {self.investment_name}, Shares: {self.shares}'
 
     def get_average_price(self):
         data = yf.Ticker(self.ticker)
