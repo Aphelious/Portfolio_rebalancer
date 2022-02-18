@@ -48,7 +48,15 @@ software design decisions and I really enjoyed the process of coming to this
 conclusion. 
 
 In preparation for writing this application I had to learn SQL, SQLite, the 
-sqlite3 and openpyxl Python libraries, database architecture, and evetually 
-SQLalchemy in order to use its ORM. All of this was great experience as there 
+sqlite3 and openpyxl Python libraries, database architecture, and SQLalchemy 
+in order to use its ORM. All of this was great experience as there 
 were a number of nuances to all these elements that I had to learn to navigate
 in order to get them to work together. 
+
+Once I had the basic database/ORM-mapped classes set up I began fleshing out
+the Position class, which is itself composed of Transaction objects. At first,
+I was looping over the list of transaction objects every time I wanted to get 
+more data from them and I quickly realized that this approach would likely cause
+performance issues. My approach changed to doing all of the calculations
+up front, upon instantiation of the Position object, where several class 
+variables' values could be stored and easily recalled later. 
