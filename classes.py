@@ -20,7 +20,7 @@ This script requires the yFinance and Datetime libraries
 '''
 
 
-class Portfolio():
+class Portfolio:
     '''This class represents an entire Portfolio of assets. It is composed of Position objects and contains only those
      methods that act on multiple Position objects. Multiple Portfolio objects can be saved to the database for comparison
      purposes using some global functions defined elsewhere. Every time a Portfolio object is instantiated the database
@@ -47,13 +47,12 @@ class Portfolio():
         pass
 
 
-class Position():
-    '''This class combines all transaction events of a particular stock in a list. These events include Buys, Sells, and Dividend
-    Reinvestments. Each transaction has a return on investment associated with it. The ROI is calculated buy comparing
-    buy price to the sell price and any dividends incurred during the holding period. If there is no sell event recorded,
-    the current price is used. The ROIs of all transactions are weight-averaged to make up the total Position return,
-    but each transaction ROI can be accessed using the 'list_transaction_retuns()' method.
-
+class Position:
+    '''This class combines all transaction events of a particular stock in a list. These events include Buys, Sells,
+    and Dividend Reinvestments. Each transaction has a return on investment associated with it. The ROI is calculated
+    by comparing buy price to the sell price and any dividends incurred during the holding period. If there is no sell
+    event recorded, the current price is used. The ROIs of all transactions are weight-averaged to make up the total
+    Position return, but each transaction ROI can be accessed using the 'list_transaction_retuns()' method.
 
     Methods:
 
@@ -62,55 +61,45 @@ class Position():
         of the position.
     '''
 
-    returns = {}
-
     def __init__(self, transactions):
         self.transactions = transactions  # This is a list of transaction objects, queried from the database
+        self.total_transactions = len(self.transactions)
+        self.ticker = self.transactions[0].ticker
+        self.name = self.transactions[0].investment_name
+        self.category = self.transactions[0].category
+        self.status_count = 0
+        self.status = 'Closed'
+        yf.Ticker(self.ticker)
+        latest_price = data.history(period='2d')
+        self.current_price = round(latest_price['Close'][0], 2)
+        for transaction in self.transactions:
+            self.status_count += transaction.shares
+        if self.status_count > 0:
+            self.status = 'Open'
+
 
 
     def get_info(self):
-        total_transactions = len(self.transactions)
-        ticker = self.transactions[0].ticker
-        name = self.transactions[0].investment_name
-        category = self.transactions[0].category
-        status_count = 0
-        for item in self.transactions:
-            status_count += item.shares
-        if status_count > 0:
-            status = 'Open'
-        else:
-            status = 'Closed'
+        '''Return basic information about the investment position: Investment name, Ticker, Category, Total number
+        of transactions, and Status(Open or Closed).'''
+
+        return f'Investment name: {self.name}\nTicker: {self.ticker}\nCategory: {self.category}\n' \
+               f'Total number of transactions: {self.total_transactions}\n' \
+               f'Position status: {self.status}'
 
 
-        return f'Investment name: {name}\nTicker: {ticker}\nCategory: {category}\n' \
-               f'Total number of transactions: {total_transactions}\n' \
-               f'Position status: {status}'
+    def postition_return(self):
+        pass
 
-
-    def calculate_postition_return(self):
-        buys = 0
-        sells = 0
-        dividends = 0
-        shares = 0
-        for transaction in self.transactions:
-            if transaction.trans_type == 'Buy':
-                buys += transaction.amount
-                shares += transaction.shares
-            elif transaction.trans_type == 'Sell':
-                sells += transaction.amount
-                shares -= transaction.shares
-            elif transaction.trans_type == 'Dividend Reinvestment':
-                dividends += transaction.amount
 
     def list_transactions_returns(self):
-        returns = []
+        returns = {}
         for transaction in self.transactions:
             if transaction.trans_type != 'Sell':
                 buy_price = transaction.share_price
                 buy_shares = transaction.shares
                 buy_amount = buy_price * buy_shares
-                current_price = transaction.get_latest_price()
-                current_value = buy_shares * current_price
+                current_value = buy_shares * self.current_price
                 transaction_return = round((current_value - buy_amount), 2)
-                returns.append(transaction_return)
+                returns.update({transaction.id: transaction_return})
         return returns
