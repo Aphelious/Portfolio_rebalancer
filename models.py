@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, Date, create_engine
 from sqlalchemy.orm import declarative_base
-import yfinance as yf
+
 
 engine = create_engine(f'sqlite:///transactions.db', echo=True, future=True)
 Base = declarative_base()
@@ -79,8 +79,25 @@ class Transaction(Base):
     amount = Column(Float)
     principal_amount = Column(Float)
 
+    def __init__(self):
+        self.latest_price = get_latest_price(self.ticker)
+        self.current_value = self.shares * self.latest_price
+        self.profit = self.value_now - self.amount
+
     def __str__(self):
         return f'Row id: {self.id}, Transaction type: {self.trans_type}, Investment: {self.investment_name}, Shares: {self.shares}'
+
+    def __add__(self, other):
+        if type(other) != Transaction:
+            raise TypeError
+        else:
+            try:
+                new_amount = self.amount + other.amount
+                new_current_value = self.current_value + other.current_value
+                new_profit = self.profit + other.profit
+                return (new_amount, new_current_value, new_profit)
+            except:
+                raise ValueError
 
     def get_average_price(self):
         data = yf.Ticker(self.ticker)
