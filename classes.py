@@ -1,3 +1,4 @@
+import yfinance as yf
 
 '''Portfolio Rebalancer
 
@@ -69,7 +70,7 @@ class Position:
         self.category = self.transactions[0].category
         self.status_count = 0
         self.status = 'Closed'
-        yf.Ticker(self.ticker)
+        data = yf.Ticker(self.ticker)
         latest_price = data.history(period='2d')
         self.current_price = round(latest_price['Close'][0], 2)
         for transaction in self.transactions:
