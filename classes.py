@@ -90,7 +90,7 @@ class Position:
 
 
     def postition_return(self):
-        pass
+        return self.total_shares * self.current_price
 
 
     def list_transactions_returns(self):
