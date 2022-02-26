@@ -68,14 +68,14 @@ class Position:
         self.ticker = self.transactions[0].ticker
         self.name = self.transactions[0].investment_name
         self.category = self.transactions[0].category
-        self.status_count = 0
+        self.total_shares = 0
         self.status = 'Closed'
         data = yf.Ticker(self.ticker)
         latest_price = data.history(period='2d')
         self.current_price = round(latest_price['Close'][0], 2)
         for transaction in self.transactions:
-            self.status_count += transaction.shares
-        if self.status_count > 0:
+            self.total_shares += transaction.shares
+        if self.total_shares > 0:
             self.status = 'Open'
 
 
