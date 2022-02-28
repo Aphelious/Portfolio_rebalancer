@@ -69,12 +69,14 @@ class Position:
         self.name = self.transactions[0].investment_name
         self.category = self.transactions[0].category
         self.total_shares = 0
+        self.total_amount = 0
         self.status = 'Closed'
         data = yf.Ticker(self.ticker)
         latest_price = data.history(period='2d')
         self.current_price = round(latest_price['Close'][0], 2)
         for transaction in self.transactions:
             self.total_shares += transaction.shares
+            self.total_amount += transaction.principal_amount
         if self.total_shares > 0:
             self.status = 'Open'
 
@@ -90,8 +92,8 @@ class Position:
 
 
     def postition_return(self):
-        return self.total_shares * self.current_price
-
+        position_return = round((self.total_shares * self.current_price)-self.total_amount, 2)
+        return f'Total position return: ${position_return}'
 
     def list_transactions_returns(self):
         returns = {}
