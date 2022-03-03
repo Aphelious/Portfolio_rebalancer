@@ -62,6 +62,9 @@ class Position:
         of the position.
     '''
 
+    def get_latest_price(self):
+        pass
+
     def __init__(self, transactions):
         self.transactions = transactions  # This is a list of transaction objects, queried from the database
         self.total_transactions = len(self.transactions)
@@ -71,15 +74,12 @@ class Position:
         self.total_shares = 0
         self.total_amount = 0
         self.status = 'Closed'
-        data = yf.Ticker(self.ticker)
-        latest_price = data.history(period='2d')
-        self.current_price = round(latest_price['Close'][0], 2)
+        self.current_price = get_latest_price()
         for transaction in self.transactions:
             self.total_shares += transaction.shares
             self.total_amount += transaction.principal_amount
         if self.total_shares > 0:
             self.status = 'Open'
-
 
 
     def get_info(self):
