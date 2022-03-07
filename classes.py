@@ -86,7 +86,9 @@ class Position:
         '''Return basic information about the investment position: Investment name, Ticker, Category, Total number
         of transactions, and Status(Open or Closed).'''
 
-        return f'Investment name: {self.name}\nTicker: {self.ticker}\nCategory: {self.category}\n' \
+        return f'Investment name: {self.name}\n' \
+               f'Ticker: {self.ticker}\n' \
+               f'Category: {self.category}\n' \
                f'Total number of transactions: {self.total_transactions}\n' \
                f'Position status: {self.status}'
 
