@@ -44,6 +44,7 @@ class Portfolio:
 
     def __init__(self, positions):
         self.positions = positions
+        self.total_postiions = len(self.positions)
 
     def total_return(self):
         # TODO: write total return of Portfolio function
