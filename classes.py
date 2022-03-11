@@ -21,6 +21,12 @@ This script requires the yFinance and Datetime libraries
 '''
 
 
+def get_latest_price(ticker):
+    data = yf.Ticker(ticker)
+    latest_price = data.history(period='2d')
+    return round(latest_price['Close'][0], 2)
+
+
 class Portfolio:
     '''This class represents an entire Portfolio of assets. It is composed of Position objects and contains only those
      methods that act on multiple Position objects. Multiple Portfolio objects can be saved to the database for comparison
@@ -62,13 +68,9 @@ class Position:
         of the position.
     '''
 
-    def get_latest_price(self):
-        data = yf.Ticker(self.ticker)
-        latest_price = data.history(period='2d')
-        return round(latest_price['Close'][0], 2)
 
     def __init__(self, transactions):
-        self.transactions = transactions  # This is a list of transaction objects, queried from the database
+        self.transactions = transactions  # This is a list of transaction objects queried from the database
         self.total_transactions = len(self.transactions)
         self.ticker = self.transactions[0].ticker
         self.name = self.transactions[0].investment_name
@@ -76,7 +78,7 @@ class Position:
         self.total_shares = 0
         self.total_amount = 0
         self.status = 'Closed'
-        self.latest_price = get_latest_price()
+        self.latest_price = get_latest_price(self.ticker)
         for transaction in self.transactions:
             self.total_shares += transaction.shares
             self.total_amount += transaction.principal_amount
