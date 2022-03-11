@@ -63,7 +63,9 @@ class Position:
     '''
 
     def get_latest_price(self):
-        pass
+        data = yf.Ticker(self.ticker)
+        latest_price = data.history(period='2d')
+        return round(latest_price['Close'][0], 2)
 
     def __init__(self, transactions):
         self.transactions = transactions  # This is a list of transaction objects, queried from the database
@@ -74,7 +76,7 @@ class Position:
         self.total_shares = 0
         self.total_amount = 0
         self.status = 'Closed'
-        self.current_price = get_latest_price()
+        self.latest_price = get_latest_price()
         for transaction in self.transactions:
             self.total_shares += transaction.shares
             self.total_amount += transaction.principal_amount
@@ -94,7 +96,7 @@ class Position:
 
 
     def postition_return(self):
-        position_return = round((self.total_shares * self.current_price)-self.total_amount, 2)
+        position_return = round((self.total_shares * self.latest_price) - self.total_amount, 2)
         return f'Total position return: ${position_return}'
 
     def list_transactions_returns(self):
@@ -104,7 +106,7 @@ class Position:
                 buy_price = transaction.share_price
                 buy_shares = transaction.shares
                 buy_amount = buy_price * buy_shares
-                current_value = buy_shares * self.current_price
+                current_value = buy_shares * self.latest_price
                 transaction_return = round((current_value - buy_amount), 2)
                 returns.update({transaction.id: transaction_return})
         return returns
