@@ -54,6 +54,10 @@ class Portfolio:
         # TODO: write compare allocations function
         pass
 
+    def __str__(self):
+        return f'This Portfolio consists of {self.total_postiions} posititons. ' \
+               f'The total return of the Portfolio to date will be calculated soon'
+
 
 class Position:
     '''This class combines all transaction events of a particular stock in a list. These events include Buys, Sells,
