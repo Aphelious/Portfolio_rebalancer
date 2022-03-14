@@ -54,6 +54,12 @@ class Portfolio:
         self.portfolio_return = portfolio_return
         return portfolio_return
 
+    def list_positions(self):
+        for position in self.positions:
+            print(position.get_info())
+            print(position.postition_return())
+            print()
+
     def compare_allocations(self):
         # TODO: write compare allocations function
         pass
