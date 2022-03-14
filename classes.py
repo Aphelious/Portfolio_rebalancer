@@ -103,8 +103,12 @@ class Position:
 
 
     def postition_return(self):
-        position_return = round((self.total_shares * self.latest_price) - self.total_amount, 2)
-        return f'Total position return: ${position_return}'
+        if self.status == 'Open':
+            position_return = round((self.total_shares * self.latest_price) - abs(self.total_amount), 2)
+            return f'Total position return: ${position_return}'
+        else:
+            return f'Total position return: ${round(abs(self.total_amount), 2)}'
+
 
     def list_transactions_returns(self):
         returns = {}
