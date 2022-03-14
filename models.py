@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, Date, create_engine
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, reconstructor, Session
+import yfinance as yf
 
 
 engine = create_engine(f'sqlite:///transactions.db', echo=True, future=True)
@@ -79,13 +80,10 @@ class Transaction(Base):
     amount = Column(Float)
     principal_amount = Column(Float)
 
-    def __init__(self):
-        self.latest_price = get_latest_price(self.ticker)
-        self.current_value = self.shares * self.latest_price
-        self.profit = self.value_now - self.amount
-
     def __str__(self):
-        return f'Row id: {self.id}, Transaction type: {self.trans_type}, Investment: {self.investment_name}, Shares: {self.shares}'
+        return f'{self.id}, {self.settlement_date}, {self.trans_type}, {self.investment_name}, {self.category},' \
+               f' {self.ticker}, {self.shares}, {self.share_price}, {self.amount}, {self.principal_amount}'
+
 
     def __add__(self, other):
         if type(other) != Transaction:
@@ -111,3 +109,10 @@ class Transaction(Base):
         data = yf.Ticker(self.ticker)
         latest_price = data.history(period='2d')
         return round(latest_price['Close'][0], 2)
+
+    # @reconstructor
+    # def init_on_load(self):
+    #     '''Add two instance-level attributes to the Transaction object upon recreation from the database. Attribute
+    #     values will be set upon instantiation of the Portfolio object.'''
+    #     self.value_now = None
+    #     self.return_ = None
