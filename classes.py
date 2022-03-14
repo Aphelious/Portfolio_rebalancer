@@ -45,10 +45,14 @@ class Portfolio:
     def __init__(self, positions):
         self.positions = positions  # This is a list of Position objects composed of lists of Transaction objects.
         self.total_postiions = len(self.positions)
+        self.portfolio_return = 0
 
     def total_return(self):
-        # TODO: write total return of Portfolio function
-        pass
+        portfolio_return = 0
+        for position in self.positions:
+            portfolio += position_return()
+        self.portfolio_return = portfolio_return
+        return portfolio_return
 
     def compare_allocations(self):
         # TODO: write compare allocations function
@@ -56,7 +60,7 @@ class Portfolio:
 
     def __str__(self):
         return f'This Portfolio consists of {self.total_postiions} posititons. ' \
-               f'The total return of the Portfolio to date will be calculated soon'
+               f'The total return of the Portfolio to date is: {self.portfolio_return}'
 
 
 class Position:
