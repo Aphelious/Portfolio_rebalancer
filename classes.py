@@ -60,9 +60,26 @@ class Portfolio:
             print(position.postition_return())
             print()
 
-    def compare_allocations(self):
-        # TODO: write compare allocations function
-        pass
+    def current_allocation(self) -> dict:
+        '''Groups all Positions by Investment Category, totals each category amount and inserts the values into a
+        dictionary. A total amount is calculated from the summing the dictionary values which is then used to calculate
+        each category's percentage of the total. Returns a dict type.'''
+
+        allocation_dict = {}
+        for position in self.positions:
+            if position.status == 'Open':
+                if position.category in allocation_dict:
+                    allocation_dict[position.category] += position.total_amount
+                else:
+                    allocation_dict[position.category] = position.total_amount
+        total_value = sum(allocation_dict.values())
+        for category in allocation_dict:
+            allocation_dict[category] = round(allocation_dict[category]/total_value, 2)
+        for key, value in allocation_dict.items():
+            print(f'{key}:{value * 100}%')
+        return allocation_dict  # Right now the main output is printing text to the screen. Once a GUI is establshed,
+                                # these return types will be updated
+
 
     def __str__(self):
         return f'This Portfolio consists of {self.total_postiions} posititons. ' \
