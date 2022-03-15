@@ -14,8 +14,8 @@ to include. I have found that my brokerage's app presents a very high-level
 view of my portfolio and I would like to see more fine detail. I would also 
 like to have some tools to easily compare decisions that I've made concerning 
 my investments. A suite of research tools, such as a Monte Carlo simulation 
-engine, random walk generator, etc. would be very useful for considering an 
-investment. There's potential to create my own Bloomberg terminal. 
+engine, random walk generator, etc. could be useful for considering an 
+investment. 
 
 Some very advanced features that I'd like to include are a NLP engine capable 
 of taking a question as input and searching the academic literature for information
