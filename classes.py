@@ -4,19 +4,19 @@ import yfinance as yf
 
 Module level documentation
 
-This Module is written for the purpose of retrieving current stock price data, arranging it into current positions
-and composing a portfolio based on those positions. General statistics are generated computing the returns of the various
-positions in absolute and relative terms. Then an analysis is done to compare the current portfolio allocations to an
-ideal or pre-scribed allocation. The script then outputs directions for buys/sells to bring the portfolio
-back into balance. The implementation consists of three classes: Portfolio, Position, and Transaction. Portfolio objects are
-composed of Position objects. Position objects are composed of Transaction objects Most methods, such as Buys and Sells,
-Calculate Total Return, etc. belong to Positions. The methods of rebalancing are methods of the Portfolio class and
+This Module is written for the purpose of retrieving current stock price data, arranging transaction data into
+Positions, and arranging those Positions into a total Portfolio. General statistics are generated computing the returns 
+of the various positions and even returns of the various transactions that make up those Positions. Other analyses 
+can be done to compare the current portfolio allocations to an ideal or pre-scribed allocation. The application can then 
+be used to output instructions for buys/sells to bring the portfolio back into balance with the desired allocation. 
+The implementation consists of three classes: Portfolio, Position, and Transaction. Transactions are stored in a local 
+database and using SQLalchemy's ORM those database rows are read into the application and Transaction objects are then
+instantiated. Position objects are composed of these Transaction objects. The position class contains all the methods
+for working with Transaction objects. Portfolio objects are composed of Position objects and contain the methods for 
+working with Position objects. For example, The methods of rebalancing are methods of the Portfolio class and
 mostly they simply call the appropriate subclasses' methods to the extent they are needed. All dates and times are in
-the form of aware datetime objects to preserve accuracy of prices in market that often fluctuate by the minute. This
-also makes it easier to pass those attributes to other library's methods, specifically the yFinance library, of which
-this module makes heavy use.
-
-This script requires the yFinance and Datetime libraries
+the form of naive datetime objects because most data is in the form of csv files that won't contain timezone information. 
+This application requires the yFinance library.
 
 '''
 
