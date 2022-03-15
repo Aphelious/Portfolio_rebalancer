@@ -59,9 +59,9 @@ class Portfolio:
          in the portfolio. '''
 
         for position in self.positions:
-            print(position.get_info())
-            print(position.postition_return())
-            print()
+            return f'{position.get_info()}\n' \
+                   f'{position.postition_return()}\n'
+
 
     def current_allocation(self) -> dict:
         '''Groups all Positions by Investment Category, totals each category amount and inserts the values into a
