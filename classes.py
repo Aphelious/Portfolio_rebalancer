@@ -83,6 +83,12 @@ class Portfolio:
         return allocation_dict  # Right now the main output is printing text to the screen. Once a GUI is establshed,
                                 # these return types will be updated
 
+    def compare_allocation(self):
+        '''Input a dictionary of Category:Amount pairs that define the desired Portfolio allocations. This method then
+         compares the current Portfolio allocation to the desired allocation and outputs a dictionary detailing the
+         changes that would bring the Portfolio into alignment with the desired Portfolio allocations.'''
+        pass
+
 
     def __str__(self):
         return f'This Portfolio consists of {self.total_postiions} posititons.\n' \
