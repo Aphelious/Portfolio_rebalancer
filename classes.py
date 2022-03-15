@@ -35,19 +35,23 @@ class Portfolio:
      both are updated with current information. This allows for comparison between different versions of the same
      portfolio.
 
-    Methods
+    Methods:
 
-    total return:
-        calls each Position object's calculate_position_return() method and outputs a formatted list
+    list_positions()
+        calls each Position object's get_info() and position_return() methods and prints.
 
+    current_allocation()
+        Prints a dictionary where investment Categories are the keys and the values are the percentage that category
+        makes up of the total portfolio value.
      '''
+
 
     def __init__(self, positions):
         self.positions = positions  # This is a list of Position objects composed of lists of Transaction objects.
         self.total_postiions = len(self.positions)
         self.total_return = 0
         for position in self.positions:
-            self.total_return += position_return()
+            self.total_return += position.position_return()
 
 
     def list_positions(self):
@@ -81,8 +85,8 @@ class Portfolio:
 
 
     def __str__(self):
-        return f'This Portfolio consists of {self.total_postiions} posititons. ' \
-               f'The total return of the Portfolio to date is: {self.total_return}'
+        return f'This Portfolio consists of {self.total_postiions} posititons.\n' \
+               f'The total return of the Portfolio to date is: ${round(self.total_return, 2)}\n'
 
 
 class Position:
@@ -128,12 +132,12 @@ class Position:
                f'Position status: {self.status}'
 
 
-    def postition_return(self):
+    def position_return(self):
         if self.status == 'Open':
             position_return = round((self.total_shares * self.latest_price) - abs(self.total_amount), 2)
-            return f'Total position return: ${position_return}'
+            return position_return
         else:
-            return f'Total position return: ${round(abs(self.total_amount), 2)}'
+            return round(abs(self.total_amount), 2)
 
 
     def list_transactions_returns(self):
