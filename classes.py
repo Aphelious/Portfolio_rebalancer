@@ -45,16 +45,10 @@ class Portfolio:
     def __init__(self, positions):
         self.positions = positions  # This is a list of Position objects composed of lists of Transaction objects.
         self.total_postiions = len(self.positions)
-        self.portfolio_return = 0
-
-    def total_return(self) -> float:
-        '''Calculates the total return of the Portfolio by summing all Position returns. Returns a float.'''
-
-        portfolio_return = 0
+        self.total_return = 0
         for position in self.positions:
-            portfolio += position_return()
-        self.portfolio_return = portfolio_return
-        return portfolio_return
+            self.total_return += position_return()
+
 
     def list_positions(self):
         '''Prints Position info and return info by calling get_info() and position_return() on all position objects
@@ -88,7 +82,7 @@ class Portfolio:
 
     def __str__(self):
         return f'This Portfolio consists of {self.total_postiions} posititons. ' \
-               f'The total return of the Portfolio to date is: {self.portfolio_return}'
+               f'The total return of the Portfolio to date is: {self.total_return}'
 
 
 class Position:
