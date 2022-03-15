@@ -48,7 +48,7 @@ class Portfolio:
 
     def __init__(self, positions):
         self.positions = positions  # This is a list of Position objects composed of lists of Transaction objects.
-        self.total_postiions = len(self.positions)
+        self.total_positions = len(self.positions)
         self.total_return = 0
         for position in self.positions:
             self.total_return += position.position_return()
@@ -91,7 +91,7 @@ class Portfolio:
 
 
     def __str__(self):
-        return f'This Portfolio consists of {self.total_postiions} posititons.\n' \
+        return f'This Portfolio consists of {self.total_positions} posititons.\n' \
                f'The total return of the Portfolio to date is: ${round(self.total_return, 2)}\n'
 
 
