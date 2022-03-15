@@ -47,7 +47,9 @@ class Portfolio:
         self.total_postiions = len(self.positions)
         self.portfolio_return = 0
 
-    def total_return(self):
+    def total_return(self) -> float:
+        '''Calculates the total return of the Portfolio by summing all Position returns. Returns a float.'''
+
         portfolio_return = 0
         for position in self.positions:
             portfolio += position_return()
@@ -55,6 +57,9 @@ class Portfolio:
         return portfolio_return
 
     def list_positions(self):
+        '''Prints Position info and return info by calling get_info() and position_return() on all position objects
+         in the portfolio. '''
+
         for position in self.positions:
             print(position.get_info())
             print(position.postition_return())
