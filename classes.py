@@ -114,7 +114,7 @@ class Position:
         self.ticker = self.transactions[0].ticker
         self.name = self.transactions[0].investment_name
         self.category = self.transactions[0].category
-        self.total_shares = 0
+        self.total_shares = sum(t.shares for t in self.transactions)
         self.total_amount = 0
         self.status = 'Closed'
         self.latest_price = get_latest_price(self.ticker)
