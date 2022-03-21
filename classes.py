@@ -118,9 +118,6 @@ class Position:
         self.total_amount = sum(t.principal_amount for t in self.transactions)
         self.status = 'Closed'
         self.latest_price = get_latest_price(self.ticker)
-        for transaction in self.transactions:
-            self.total_shares += transaction.shares
-            self.total_amount += transaction.principal_amount
         if self.total_shares > 0:
             self.status = 'Open'
 
