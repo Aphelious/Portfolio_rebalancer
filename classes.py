@@ -49,9 +49,7 @@ class Portfolio:
     def __init__(self, positions):
         self.positions = positions  # This is a list of Position objects composed of lists of Transaction objects.
         self.total_positions = len(self.positions)
-        self.total_return = 0
-        for position in self.positions:
-            self.total_return += position.position_return()
+        self.total_return = sum(p.position_return() for p in self.positions)
 
 
     def list_positions(self):
