@@ -84,7 +84,6 @@ class Transaction(Base):
         return f'{self.id}, {self.settlement_date}, {self.trans_type}, {self.investment_name}, {self.category},' \
                f' {self.ticker}, {self.shares}, {self.share_price}, {self.amount}, {self.principal_amount}'
 
-
     def __add__(self, other):
         if type(other) != Transaction:
             raise TypeError
