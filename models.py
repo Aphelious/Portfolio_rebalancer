@@ -3,14 +3,15 @@ from sqlalchemy.orm import declarative_base, reconstructor, Session
 import yfinance as yf
 
 
-engine = create_engine(f'sqlite:///transactions.db', echo=True, future=True)
+engine = create_engine(f"sqlite:///transactions.db", echo=True, future=True)
 Base = declarative_base()
 
 
 # Set up SQLAlchemy Mapping for the Transaction class:
 
+
 class Transaction(Base):
-    '''Models distinct purchase, sell, or dividend re-invesment events of a particular stock or etf. This is the most
+    """Models distinct purchase, sell, or dividend re-invesment events of a particular stock or etf. This is the most
     fine-grained data that the program works with. This class is used to create objects directly from well-formatted
     csv files commonly output by investment brokerage APIs. By first modeling the individual transactions a portfolio
     has made the program can incorporate the full timeline of investment decisions into the current state of the
@@ -63,9 +64,9 @@ class Transaction(Base):
 
     get_latest_price()
         uses yfinance to fetch the price of the ticker at a specific date
-    '''
+    """
 
-    __tablename__ = 'transactions'
+    __tablename__ = "transactions"
 
     id = Column(Integer, primary_key=True, unique=True)
     account = Column(Integer)
@@ -81,8 +82,10 @@ class Transaction(Base):
     principal_amount = Column(Float)
 
     def __str__(self):
-        return f'{self.id}, {self.settlement_date}, {self.trans_type}, {self.investment_name}, {self.category},' \
-               f' {self.ticker}, {self.shares}, {self.share_price}, {self.amount}, {self.principal_amount}'
+        return (
+            f"{self.id}, {self.settlement_date}, {self.trans_type}, {self.investment_name}, {self.category},"
+            f" {self.ticker}, {self.shares}, {self.share_price}, {self.amount}, {self.principal_amount}"
+        )
 
     def __add__(self, other):
         if type(other) != Transaction:
@@ -98,16 +101,16 @@ class Transaction(Base):
 
     def get_average_price(self):
         data = yf.Ticker(self.ticker)
-        latest_price = data.history(period='1d')
-        low = latest_price['Low'][0]
-        high = latest_price['High'][0]
+        latest_price = data.history(period="1d")
+        low = latest_price["Low"][0]
+        high = latest_price["High"][0]
         average = (low + high) / 2
         return round(average, 2)
 
     def get_latest_price(self):
         data = yf.Ticker(self.ticker)
-        latest_price = data.history(period='2d')
-        return round(latest_price['Close'][0], 2)
+        latest_price = data.history(period="2d")
+        return round(latest_price["Close"][0], 2)
 
     # @reconstructor
     # def init_on_load(self):
