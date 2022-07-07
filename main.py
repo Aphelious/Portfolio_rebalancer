@@ -49,11 +49,8 @@ with Session(engine) as session:
         position = Position(transactions)
         positions.append(position)
 
-for position in positions:
-    print(position.get_info())
-    print(position.postition_return())
-    print()
 
-
-
+portfolio = Portfolio(positions)
+print(portfolio)
+print(portfolio.total_return)
 
